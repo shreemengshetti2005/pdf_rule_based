@@ -6,7 +6,7 @@ from utils import (
     is_numeric_bullet, assign_heading_level
 )
 
-def extract_outline(pdf_path: str) -> dict:
+def extract_outline(pdf_path: str) -> dict :
     """
     Extract title and H1/H2/H3 outline from PDF, skipping tables, headers/footers, and form fields.
     """
