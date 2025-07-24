@@ -6,7 +6,7 @@ OUTPUT = "app/output"
 os.makedirs(OUTPUT, exist_ok=True)
 
 for fn in os.listdir(INPUT):
-    if not fn.lower().endswith(".pdf"):
+    if not fn.lower().endswith(".pdf") :
         continue
     src = os.path.join(INPUT, fn)
     print(f"Processing {fn}…")
