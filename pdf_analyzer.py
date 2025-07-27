@@ -4,7 +4,7 @@ import logging
 from collections import defaultdict
 from typing import List, Dict, Optional, Tuple
 
-class PDFAnalyzer:
+class PDFAnalyzer :
     """
     PDF analyzer that extracts titles and hierarchical headings from PDF documents.
     Uses font size, style, and positioning analysis for intelligent heading detection.
