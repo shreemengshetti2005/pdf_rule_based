@@ -11,7 +11,7 @@ from typing import Dict, List
 # Available models (you can add more if needed)
 # --------------------------------------------
 AVAILABLE_MODELS = {
-    "sentence-transformers/all-MiniLM-L6-v2": {
+    "sentence-transformers/all-MiniLM-L6-v2":  {
         "size": "~90MB",
         "dimensions": 384,
         "description": "Fast and efficient model for semantic similarity tasks, good balance of speed and performance",
