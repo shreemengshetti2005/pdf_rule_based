@@ -1,5 +1,3 @@
-# relevance_ranker.py (Optimized for Local Gemma Model)
-
 from typing import List, Dict
 from sklearn.metrics.pairwise import cosine_similarity
 import numpy as np
@@ -7,16 +5,13 @@ import os
 from pathlib import Path
 from embedding_engine import embed
 
-# Try to import required libraries for local model inference
 try:
-    # First try llama-cpp-python for GGUF files
     from llama_cpp import Llama
     LLAMA_CPP_AVAILABLE = True
     TRANSFORMERS_AVAILABLE = False
     print("✅ Using llama-cpp-python for GGUF model")
 except ImportError:
     try:
-        # Fallback to transformers
         from transformers import AutoTokenizer, AutoModelForCausalLM
         import torch
         TRANSFORMERS_AVAILABLE = True
@@ -27,17 +22,12 @@ except ImportError:
         LLAMA_CPP_AVAILABLE = False
         print("⚠️ Neither llama-cpp-python nor transformers available. Please install one of them.")
 
-# Model configuration - direct path to GGUF file
 MODEL_PATH = Path("./models/Gemma-1B.Q4_K_M.gguf")
 
-# Global model and tokenizer instances
 _model = None
 _tokenizer = None
 
 def check_local_model():
-    """
-    Check if the local Gemma model exists at the specified path
-    """
     if MODEL_PATH.exists() and MODEL_PATH.is_file():
         print(f"✅ Model file found at: {MODEL_PATH}")
         return True
@@ -47,15 +37,11 @@ def check_local_model():
         return False
 
 def load_local_model():
-    """
-    Load the local Gemma model using the appropriate library
-    """
     global _model, _tokenizer
     
     if _model is not None:
         return _model, _tokenizer
     
-    # Check if model exists
     if not check_local_model():
         raise FileNotFoundError(f"Model file not found at {MODEL_PATH}")
     
@@ -65,12 +51,12 @@ def load_local_model():
         try:
             _model = Llama(
                 model_path=str(MODEL_PATH),
-                n_ctx=2048,  # Context window
-                n_threads=4,  # Number of threads
-                n_gpu_layers=0,  # Set to -1 if you have GPU support, 0 for CPU only
+                n_ctx=2048,
+                n_threads=4,
+                n_gpu_layers=0,
                 verbose=False
             )
-            _tokenizer = None  # Not needed for llama-cpp-python
+            _tokenizer = None
             print(f"✅ Model loaded successfully with llama-cpp-python!")
             return _model, _tokenizer
             
@@ -79,9 +65,7 @@ def load_local_model():
             raise
     
     elif TRANSFORMERS_AVAILABLE:
-        # This won't work with GGUF files, but keeping for compatibility
         try:
-            # This will fail for GGUF files - transformers can't load them directly
             model_dir = MODEL_PATH.parent
             _tokenizer = AutoTokenizer.from_pretrained(str(model_dir))
             _model = AutoModelForCausalLM.from_pretrained(
@@ -106,21 +90,17 @@ def load_local_model():
         raise ImportError("No suitable model loading library available. Install llama-cpp-python for GGUF files or transformers for standard models.")
 
 def call_gemma_local(prompt: str, max_tokens: int = 200) -> str:
-    """
-    Call Gemma locally using the appropriate library
-    """
     try:
         model, tokenizer = load_local_model()
         
         if LLAMA_CPP_AVAILABLE:
-            # Use llama-cpp-python
             response = model(
                 prompt,
                 max_tokens=max_tokens,
                 temperature=0.2,
                 top_p=0.8,
                 repeat_penalty=1.1,
-                stop=["</s>", "\n\n"],  # Stop tokens
+                stop=["</s>", "\n\n"],
                 echo=False
             )
             
@@ -129,7 +109,6 @@ def call_gemma_local(prompt: str, max_tokens: int = 200) -> str:
             return generated_text
             
         elif TRANSFORMERS_AVAILABLE:
-            # Use transformers
             inputs = tokenizer.encode(prompt, return_tensors="pt")
             
             if hasattr(model, 'device'):
@@ -161,10 +140,6 @@ def call_gemma_local(prompt: str, max_tokens: int = 200) -> str:
         return ""
 
 def extract_keywords_and_create_vector_optimized_sentence(persona: str, job_to_be_done: str) -> str:
-    """
-    Use local Gemma to extract keywords and create a sentence optimized for vector similarity search
-    This is the ONLY Gemma call in the entire ranking process
-    """
     print(f"\n🔍 Creating vector-optimized query sentence using local model...")
     print(f"   Persona: {persona}")
     print(f"   Job: {job_to_be_done}")
@@ -517,13 +492,11 @@ def full_ranking_pipeline(sections: List[Dict], persona: str, job_to_be_done: st
     print(f"   Using local model: {MODEL_PATH}")
     print("-" * 60)
     
-    # Step 1: Relevance ranking (only 1 local Gemma call)
     ranked_sections = rank_sections_by_relevance(sections, persona, job_to_be_done)
     
-    # Step 2: Diversity reranking (no Gemma calls)
     final_sections = rerank_for_diversity(ranked_sections, top_n)
     
-    print(f"\n🎉 Pipeline complete! Returning {len(final_sections)} sections")
+    print(f"\line complete! Returning {len(final_sections)} sections")
     print(f"💡 Total local Gemma calls made: 1 (for query optimization only)")
     return final_sections
 
@@ -531,10 +504,9 @@ def test_local_model():
     """
     Test the local model approach
     """
-    print("🧪 Testing local Gemma model...")
+    print("testin local Gemma model...")
     print(f"   Model path: {MODEL_PATH}")
     
-    # Check if model exists first
     if not check_local_model():
         return
     

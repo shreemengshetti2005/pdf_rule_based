@@ -1,9 +1,4 @@
-# enhanced_pdf_processor.py
-"""
-Enhanced PDF text extraction and structurally-aware section identification with JSON export.
-Improved with better performance, error handling, section-content mapping, and complete processing log.
-"""
-import fitz  # PyMuPDF
+import fitz
 import os
 import re
 import json
@@ -12,35 +7,19 @@ from datetime import datetime
 from collections import defaultdict
 from typing import List, Dict, Optional, Tuple
 from pathlib import Path
-
 class EnhancedPDFProcessor:
-    """
-    Enhanced PDF processor that combines section extraction with intelligent
-    heading detection, title extraction, hierarchical analysis, JSON export,
-    and comprehensive parsing log capture preserved in the output file.
-    """
-    
     def __init__(self, output_file: str = "checking.json"):
         self.logger = logging.getLogger(__name__)
         logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
-        
-        # Tuning parameters
         self.MIN_HEADING_SIZE = 12
         self.MAX_HEADING_WORDS = 20
         self.output_file = output_file
-        
-        # Cache for processed data
         self._cache = {}
-        
-        # PARSING LOG - This captures everything the processor does and stays in JSON
         self.parsing_log = []
         self.current_step = 0
-        
     def _log_parsing_step(self, step_name: str, details: str, data: any = None):
-        """Log each parsing step with details for JSON output - ALWAYS preserved in final JSON."""
         self.current_step += 1
         timestamp = datetime.now().isoformat()
-        
         log_entry = {
             "step_number": self.current_step,
             "timestamp": timestamp,
@@ -48,152 +27,100 @@ class EnhancedPDFProcessor:
             "details": details,
             "data": data
         }
-        
-        # THIS IS THE KEY - Always add to parsing log for JSON preservation
         self.parsing_log.append(log_entry)
         self.logger.info(f"Step {self.current_step}: {step_name} - {details}")
-        
-        # Also print to console for immediate feedback
         print(f"🔄 Step {self.current_step}: {step_name}")
         print(f"   └── {details}")
         if data:
             print(f"   └── Data: {str(data)[:100]}{'...' if len(str(data)) > 100 else ''}")
-    
     def process_pdf_and_save(self, pdf_path: str) -> Dict:
-        """
-        Process PDF and save results with complete parsing log to JSON file.
-        The parsing log is ALWAYS preserved in the final JSON output.
-        
-        Returns:
-            Dict: Processing results with metadata and complete parsing log
-        """
         self._log_parsing_step("INITIALIZATION", f"Starting PDF processing for: {pdf_path}")
-        
         try:
             self._log_parsing_step("VALIDATION", "Validating PDF file accessibility")
             if not self._validate_pdf_path(pdf_path):
                 self._log_parsing_step("ERROR", "PDF validation failed")
                 return {"error": "PDF validation failed", "sections": [], "parsing_log": self.parsing_log}
-            
             self._log_parsing_step("EXTRACTION", "Beginning section extraction process")
             sections = self.extract_sections_from_pdf(pdf_path)
-            
             self._log_parsing_step("STRUCTURING", f"Creating output structure for {len(sections)} sections")
             result = self._create_output_structure(pdf_path, sections)
-            
-            # CRITICAL: Ensure parsing log is always included in result
             result["parsing_log"] = self.parsing_log
-            
             self._log_parsing_step("SAVING", f"Saving results with complete parsing log to {self.output_file}")
             self._save_to_json(result)
-            
             self._log_parsing_step("COMPLETION", "PDF processing completed successfully with parsing log preserved")
             return result
-            
         except Exception as e:
             error_msg = f"Error processing PDF {pdf_path}: {e}"
             self._log_parsing_step("FATAL_ERROR", error_msg)
             self.logger.error(error_msg)
             return {"error": str(e), "sections": [], "parsing_log": self.parsing_log}
-    
     def extract_sections_from_pdf(self, pdf_path: str) -> List[Dict]:
-        """
-        Main method that extracts sections using enhanced analysis with detailed logging.
-        All processing steps are logged and preserved in the final JSON.
-        """
         sections = []
-        
         self._log_parsing_step("FILE_OPENING", f"Opening PDF file: {os.path.basename(pdf_path)}")
-        
         try:
             doc = fitz.open(pdf_path)
             doc_name = os.path.basename(pdf_path)
             self._current_pdf_path = pdf_path
-            
             self._log_parsing_step("DOCUMENT_INFO", f"PDF opened successfully - {len(doc)} pages", {
                 "total_pages": len(doc),
                 "document_name": doc_name,
                 "metadata": doc.metadata if doc.metadata else "No metadata available"
             })
-            
-            # Try embedded ToC first (most reliable)
             self._log_parsing_step("TOC_DETECTION", "Checking for embedded Table of Contents")
             toc = doc.get_toc()
-            
             if toc:
                 self._log_parsing_step("TOC_FOUND", f"Found embedded ToC with {len(toc)} entries", {
-                    "toc_entries": [{"level": level, "title": title, "page": page} for level, title, page in toc[:5]],  # First 5 entries
+                    "toc_entries": [{"level": level, "title": title, "page": page} for level, title, page in toc[:5]],
                     "total_entries": len(toc)
                 })
-                
                 self._log_parsing_step("TITLE_EXTRACTION", "Extracting title from metadata or heuristic analysis")
                 title = self._extract_title_from_metadata_or_heuristic(doc)
                 self._log_parsing_step("TITLE_FOUND", f"Document title: '{title}'", {"title": title})
-                
                 self._log_parsing_step("TOC_PROCESSING", "Creating sections from embedded ToC")
                 sections = self._create_sections_from_toc(doc, toc, title, doc_name)
-                
                 doc.close()
                 self._log_parsing_step("TOC_COMPLETE", f"Successfully extracted {len(sections)} sections from ToC")
                 return sections
-            
-            # No embedded ToC - use enhanced heuristic analysis
             self._log_parsing_step("HEURISTIC_START", "No embedded ToC found. Starting heuristic analysis")
             sections = self._process_with_heuristics(doc, doc_name)
-            
             doc.close()
             self._log_parsing_step("EXTRACTION_COMPLETE", f"Analysis complete. Found {len(sections)} sections")
             return sections
-            
         except Exception as e:
             error_msg = f"Error processing {pdf_path}: {e}"
             self._log_parsing_step("PROCESSING_ERROR", error_msg)
             self.logger.error(error_msg)
             return sections
-    
     def _validate_pdf_path(self, pdf_path: str) -> bool:
-        """Validate PDF file path and accessibility."""
         if not os.path.isfile(pdf_path):
             self.logger.error(f"File not found: {pdf_path}")
             return False
-        
         if not pdf_path.lower().endswith('.pdf'):
             self.logger.error(f"Not a PDF file: {pdf_path}")
             return False
-        
         try:
-            # Quick test to see if file can be opened
             test_doc = fitz.open(pdf_path)
             test_doc.close()
             return True
         except Exception as e:
             self.logger.error(f"Cannot open PDF file {pdf_path}: {e}")
             return False
-    
     def _process_with_heuristics(self, doc: fitz.Document, doc_name: str) -> List[Dict]:
-        """Process PDF using heuristic analysis when no ToC is available."""
-        
         self._log_parsing_step("TEXT_BLOCK_EXTRACTION", "Extracting text blocks with formatting information")
-        # Extract text blocks with detailed formatting
         text_blocks = self._extract_text_blocks(doc)
         if not text_blocks:
             self._log_parsing_step("NO_TEXT_BLOCKS", "No text blocks found in PDF")
             return []
-        
         self._log_parsing_step("TEXT_BLOCKS_FOUND", f"Extracted {len(text_blocks)} text blocks", {
             "total_blocks": len(text_blocks),
-            "sample_blocks": [{"text": block.get("text", "")[:50] + "...", "size": block.get("size"), "page": block.get("page")} 
+            "sample_blocks": [{"text": block.get("text", "")[:50] + "...", "size": block.get("size"), "page": block.get("page")}
                              for block in text_blocks[:3]]
         })
-        
-        # Filter out headers and footers
-        self._log_parsing_step("HEADER_FOOTER_DETECTION", "Identifying recurring headers and footers")
         headers, footers = self._identify_headers_footers(text_blocks, len(doc))
         self._log_parsing_step("HEADER_FOOTER_FOUND", f"Found {len(headers)} headers and {len(footers)} footers", {
             "headers": headers,
             "footers": footers
         })
-        
         filtered_blocks = [
             b for b in text_blocks
             if b['text'] not in headers and b['text'] not in footers
@@ -210,7 +137,6 @@ class EnhancedPDFProcessor:
             "size_difference": font_stats.get("size_diff")
         })
         
-        # Extract title
         self._log_parsing_step("TITLE_EXTRACTION", "Extracting document title using heuristic analysis")
         title = self._extract_title(filtered_blocks, font_stats)
         self._log_parsing_step("TITLE_EXTRACTED", f"Document title: '{title}'", {"title": title})
@@ -284,7 +210,6 @@ class EnhancedPDFProcessor:
             processed_sections.append(section_data)
             self._log_parsing_step("SECTION_STRUCTURED", f"Structured section '{heading}' with {len(paragraphs)} paragraphs")
         
-        # CRITICAL: Create final structure with parsing log ALWAYS included
         final_structure = {
             "document_metadata": {
                 "source_file": os.path.basename(pdf_path),
@@ -302,7 +227,6 @@ class EnhancedPDFProcessor:
                 "total_paragraphs": sum(s["statistics"]["paragraph_count"] for s in processed_sections)
             },
             "sections": processed_sections,
-            # THIS IS THE KEY ADDITION - Complete parsing log ALWAYS preserved in JSON
             "parsing_log": self.parsing_log,
             "processing_summary": {
                 "total_processing_steps": len(self.parsing_log),
@@ -320,18 +244,16 @@ class EnhancedPDFProcessor:
         if not content:
             return []
         
-        # Split by double newlines or single newlines followed by significant content
         raw_paragraphs = re.split(r'\n\s*\n|\n(?=\s*[A-Z])', content)
         
         structured_paragraphs = []
         for i, para in enumerate(raw_paragraphs):
             para = para.strip()
-            if not para or len(para) < 10:  # Skip very short paragraphs
+            if not para or len(para) < 10: 
                 continue
             
-            # Clean up paragraph
-            para = re.sub(r'\s+', ' ', para)  # Normalize whitespace
-            para = re.sub(r'\n+', ' ', para)  # Remove internal line breaks
+            para = re.sub(r'\s+', ' ', para) 
+            para = re.sub(r'\n+', ' ', para) 
             
             paragraph_data = {
                 "paragraph_id": i + 1,
@@ -359,21 +281,17 @@ class EnhancedPDFProcessor:
         and COMPLETE parsing log preserved in the file.
         """
         try:
-            # Ensure output directory exists
             output_path = Path(self.output_file)
             output_path.parent.mkdir(parents=True, exist_ok=True)
             
             self._log_parsing_step("JSON_PREPARATION", f"Preparing to save data with complete parsing log to {self.output_file}")
             
-            # ENSURE parsing log is in the data before saving
             if "parsing_log" not in data:
                 data["parsing_log"] = self.parsing_log
             
-            # Pretty print the JSON with proper formatting
             with open(self.output_file, 'w', encoding='utf-8') as f:
                 json.dump(data, f, indent=2, ensure_ascii=False, separators=(',', ': '))
             
-            # Log summary of what was saved
             sections_count = len(data.get("sections", []))
             total_paragraphs = sum(len(s.get("paragraphs", [])) for s in data.get("sections", []))
             parsing_steps = len(data.get("parsing_log", []))
@@ -393,7 +311,6 @@ class EnhancedPDFProcessor:
             print(f"   • File Size: {round(os.path.getsize(self.output_file) / 1024, 2)} KB")
             print(f"   • Complete Processing Log: PRESERVED IN JSON ✓")
             
-            # Print a sample of the parsing log for verification
             if data.get("parsing_log"):
                 sample_log = data["parsing_log"][:3]
                 print(f"\n🔍 Sample Parsing Log Entries (saved in JSON):")
@@ -408,12 +325,11 @@ class EnhancedPDFProcessor:
     
     def _extract_title_from_metadata_or_heuristic(self, doc: fitz.Document) -> str:
         """Extract title from metadata or use heuristic analysis."""
-        # Try metadata first
+       
         metadata_title = doc.metadata.get('title', '').strip()
         if metadata_title and len(metadata_title) > 3:
             return metadata_title
         
-        # Fall back to heuristic analysis
         text_blocks = self._extract_text_blocks(doc)
         if not text_blocks:
             return "Document"
@@ -429,15 +345,12 @@ class EnhancedPDFProcessor:
         
         for i, (level, heading_text, page_num) in enumerate(toc):
             try:
-                # Get content for this section
-                start_page = max(0, page_num - 1)  # Convert to 0-based, ensure non-negative
+                start_page = max(0, page_num - 1)
                 
-                # Find end page (next heading or end of document)
                 end_page = len(doc) - 1
                 if i + 1 < len(toc):
-                    end_page = min(toc[i + 1][2] - 2, len(doc) - 1)  # Page before next heading
+                    end_page = min(toc[i + 1][2] - 2, len(doc) - 1)  
                 
-                # Extract content between start and end pages
                 content = self._extract_content_between_pages(doc, start_page, end_page, heading_text)
                 
                 if content.strip():
@@ -465,10 +378,8 @@ class EnhancedPDFProcessor:
             try:
                 page = doc[page_idx]
                 if page_idx == start_page:
-                    # First page - content after heading
                     page_content = self._extract_content_after_heading(doc, page_idx, heading_text)
                 else:
-                    # Subsequent pages - all content
                     page_content = page.get_text()
                 
                 if page_content.strip():
@@ -488,7 +399,6 @@ class EnhancedPDFProcessor:
         
         self._log_parsing_step("SECTION_CREATION", f"Creating sections from {len(headings)} headings")
         
-        # Sort headings by page and position
         headings.sort(key=lambda x: (x["page"], x.get("bbox", [0, 0, 0, 0])[1]))
         self._log_parsing_step("HEADING_SORTING", "Sorted headings by page and position")
         
@@ -504,25 +414,22 @@ class EnhancedPDFProcessor:
                     "level": heading.get("level", "H2")
                 })
                 
-                # Find end page (next heading or end of document)
                 end_page = len(doc) - 1
                 if i + 1 < len(headings):
                     next_heading = headings[i + 1]
                     end_page = next_heading["page"]
                     if end_page == start_page:
-                        # If next heading is on same page, extract until that heading
                         end_page = start_page
                 
                 self._log_parsing_step("CONTENT_EXTRACTION", f"Extracting content from page {start_page + 1} to {end_page + 1}")
                 
-                # Extract content
                 content = self._extract_section_content(doc, heading, start_page, end_page, i + 1 < len(headings))
                 
                 if content.strip():
                     section_data = {
                         "section_title": heading_text,
                         "content": content,
-                        "page_number": start_page + 1,  # Convert to 1-based
+                        "page_number": start_page + 1, 
                         "document": doc_name,
                         "level": heading.get("level", "H2")
                     }
@@ -553,13 +460,10 @@ class EnhancedPDFProcessor:
         for page_idx in range(start_page, min(end_page + 1, len(doc))):
             try:
                 if page_idx == start_page:
-                    # First page - content after heading
                     page_content = self._extract_content_after_heading(doc, page_idx, heading_text)
                 elif page_idx == end_page and has_next_heading:
-                    # Last page with next heading - content before next heading
                     page_content = self._extract_content_before_next_heading(doc, page_idx, end_page)
                 else:
-                    # Middle pages - all content
                     page = doc[page_idx]
                     page_content = page.get_text()
                 
@@ -593,14 +497,10 @@ class EnhancedPDFProcessor:
                 
                 if not block_text.strip():
                     continue
-                
-                # Check if this block contains our heading
                 if not heading_found and self._text_similarity(heading_text, block_text) > 0.8:
                     heading_found = True
                     heading_y_position = block_y
                     continue
-                
-                # If we found the heading, collect content after it
                 if heading_found and block_text:
                     if heading_y_position is None or (block_y and block_y > heading_y_position):
                         content_blocks.append(block_text)
@@ -658,7 +558,6 @@ class EnhancedPDFProcessor:
         if text1_clean in text2_clean or text2_clean in text1_clean:
             return 0.8
         
-        # Simple word overlap similarity
         words1 = set(text1_clean.split())
         words2 = set(text2_clean.split())
         
@@ -675,10 +574,8 @@ class EnhancedPDFProcessor:
         if not content:
             return ""
         
-        # Remove the heading itself from content
         content = re.sub(re.escape(heading_text), "", content, count=1, flags=re.IGNORECASE)
         
-        # Split into lines for processing
         lines = content.split('\n')
         cleaned_lines = []
         
@@ -687,33 +584,29 @@ class EnhancedPDFProcessor:
             if not line:
                 continue
             
-            # Skip obvious page elements
             if self._is_page_element(line):
                 continue
-                
-            # Skip very short lines that are likely artifacts
             if len(line) < 3:
                 continue
             
             cleaned_lines.append(line)
         
-        # Join and normalize whitespace
         result = '\n'.join(cleaned_lines)
-        result = re.sub(r'\n\s*\n\s*\n', '\n\n', result)  # Normalize paragraph breaks
-        result = re.sub(r'[ \t]+', ' ', result)  # Normalize spaces
-        result = re.sub(r'\n ', '\n', result)  # Remove leading spaces on lines
+        result = re.sub(r'\n\s*\n\s*\n', '\n\n', result)  
+        result = re.sub(r'[ \t]+', ' ', result)  
+        result = re.sub(r'\n ', '\n', result) 
         
         return result.strip()
     
     def _is_page_element(self, line: str) -> bool:
         """Check if a line is a page element (header, footer, page number)."""
         page_element_patterns = [
-            r'^\d+',  # Just page numbers
-            r'^page\s+\d+',  # Page X
-            r'^\d+\s*of\s*\d+',  # X of Y
-            r'^chapter\s+\d+',  # Chapter X (when standalone)
-            r'copyright|©',  # Copyright notices
-            r'^\w+\s*\|\s*\w+',  # Header patterns like "Section | Document"
+            r'^\d+', 
+            r'^page\s+\d+',  
+            r'^\d+\s*of\s*\d+', 
+            r'^chapter\s+\d+', 
+            r'copyright|©', 
+            r'^\w+\s*\|\s*\w+',  
         ]
         
         return any(re.search(pattern, line, re.IGNORECASE) for pattern in page_element_patterns)
@@ -1072,7 +965,7 @@ class EnhancedPDFProcessor:
                                 continue
                         break
             
-            # Only return if we found a reasonable number of headings
+           
             return toc_headings if len(toc_headings) > 2 else []
             
         except Exception as e:
@@ -1099,14 +992,12 @@ class EnhancedPDFProcessor:
         headings = []
         
         try:
-            # Group blocks by page for better context
             page_blocks = defaultdict(list)
             for block in text_blocks:
                 page_num = block.get("page", 0)
                 page_blocks[page_num].append(block)
             
             for page_num, blocks in page_blocks.items():
-                # Sort blocks by vertical position
                 blocks.sort(key=lambda x: x.get("bbox", [0, 0, 0, 0])[1])
                 
                 for i, block in enumerate(blocks):
