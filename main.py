@@ -82,7 +82,7 @@ def main():
 
     # 4. Re-rank for diversity
     print("\n--- 🌿 Applying Diversity Re-ranking ---")
-    diverse_top_sections = rerank_for_diversity(ranked_sections, top_n=20)
+    diverse_top_sections = rerank_for_diversity(ranked_sections, top_n=5)
 
     print("\n🏆 Final Top 5 Sections Selected:")
     for i, sec in enumerate(diverse_top_sections, 1):
@@ -97,7 +97,7 @@ def main():
             header=sec["section_title"],
             persona=persona,
             job_to_be_done=job,
-            top_k=20  # Changed from 3 to 20
+            top_k=5  # Changed from 3 to 20
         )
         if not snippets:
             first_sentence = sec.get("content", "").split('.')[0]

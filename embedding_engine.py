@@ -156,7 +156,7 @@ def get_model_info() -> Dict:
 # ------------------------------------------------
 # Find top-k most similar texts to a query with detailed output
 # ------------------------------------------------
-def similarity_search(query: str, texts: List[str], top_k: int = 20, debug: bool = False) -> List[tuple]:
+def similarity_search(query: str, texts: List[str], top_k: int = 5, debug: bool = False) -> List[tuple]:
     try:
         if debug:
             print(f"🔍 Similarity search for: {query[:100]}...")
@@ -185,7 +185,7 @@ def similarity_search(query: str, texts: List[str], top_k: int = 20, debug: bool
 # ------------------------------------------------
 # Find top-k most similar texts to a query with context
 # ------------------------------------------------
-def similarity_search_with_context(query: str, texts: List[str], persona: str, job_to_be_done: str, top_k: int = 20, debug: bool = False) -> List[tuple]:
+def similarity_search_with_context(query: str, texts: List[str], persona: str, job_to_be_done: str, top_k: int = 5, debug: bool = False) -> List[tuple]:
     try:
         if debug:
             print(f"🎯 Context-aware similarity search")

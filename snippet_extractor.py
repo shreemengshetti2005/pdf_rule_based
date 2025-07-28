@@ -168,7 +168,7 @@ class EnhancedSnippetExtractor:
                              relevance_scores: List[float],
                              persona: str,
                              job_to_be_done: str,
-                             top_k: int = 20, 
+                             top_k: int = 5, 
                              lambda_param: float = 0.7) -> List[int]:
         if not contextual_data or not relevance_scores:
             return []
@@ -229,7 +229,7 @@ def extract_enhanced_snippets(
     persona: str,
     job_to_be_done: str,
     query: str = "",
-    top_k: int = 20,
+    top_k: int = 5,
     lambda_param: float = 0.7,
     context_window: int = 3
 ) -> List[ContextualSnippet]:
@@ -292,7 +292,7 @@ def extract_top_snippets(
     header: str,
     persona: str,
     job_to_be_done: str,
-    top_k: int = 20,
+    top_k: int = 5,
     lambda_param: float = 0.6
 ) -> List[Dict]:
     enhanced_snippets = extract_enhanced_snippets(

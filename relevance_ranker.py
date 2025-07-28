@@ -468,7 +468,7 @@ def rank_sections_by_relevance(sections: List[Dict], persona: str, job_to_be_don
         print(f"❌ Error during vector-optimized ranking: {e}")
         return []
 
-def rerank_for_diversity(ranked_sections: List[Dict], top_n: int = 20, diversity_penalty: float = 0.8) -> List[Dict]:
+def rerank_for_diversity(ranked_sections: List[Dict], top_n: int = 5, diversity_penalty: float = 0.8) -> List[Dict]:
     """
     Apply diversity reranking while preserving vector similarity optimization
     """
@@ -506,7 +506,7 @@ def rerank_for_diversity(ranked_sections: List[Dict], top_n: int = 20, diversity
     
     return final_selection
 
-def full_ranking_pipeline(sections: List[Dict], persona: str, job_to_be_done: str, top_n: int = 20) -> List[Dict]:
+def full_ranking_pipeline(sections: List[Dict], persona: str, job_to_be_done: str, top_n: int = 5) -> List[Dict]:
     """
     Run the complete ranking pipeline with single local Gemma call optimization
     """

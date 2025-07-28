@@ -13,7 +13,7 @@
     ],
     "persona": "Food Contractor",
     "job_to_be_done": "Prepare a vegetarian buffet-style dinner menu for a corporate gathering, including gluten-free items.",
-    "processing_timestamp": "2025-07-28T17:55:17.550715"
+    "processing_timestamp": "2025-07-28T18:23:12.193166"
   },
   "extracted_sections": [
     {
@@ -45,96 +45,6 @@
       "section_title": "Veggie Wrap Ingredients:",
       "importance_rank": 5,
       "page_number": 13
-    },
-    {
-      "document": "Dinner Ideas - Sides_3",
-      "section_title": "Mandu",
-      "importance_rank": 6,
-      "page_number": 9
-    },
-    {
-      "document": "Dinner Ideas - Sides_2",
-      "section_title": "Farofa",
-      "importance_rank": 7,
-      "page_number": 8
-    },
-    {
-      "document": "Dinner Ideas - Sides_4",
-      "section_title": "Refried Beans",
-      "importance_rank": 8,
-      "page_number": 8
-    },
-    {
-      "document": "Dinner Ideas - Mains_3",
-      "section_title": "Pork Schnitzel Ingredients:",
-      "importance_rank": 9,
-      "page_number": 1
-    },
-    {
-      "document": "Lunch Ideas",
-      "section_title": "Turkey and Apple Sandwich Ingredients:",
-      "importance_rank": 10,
-      "page_number": 14
-    },
-    {
-      "document": "Dinner Ideas - Mains_2",
-      "section_title": "Sweet and Sour Pork Ingredients:",
-      "importance_rank": 11,
-      "page_number": 3
-    },
-    {
-      "document": "Dinner Ideas - Mains_1",
-      "section_title": "Meatloaf Ingredients:",
-      "importance_rank": 12,
-      "page_number": 13
-    },
-    {
-      "document": "Dinner Ideas - Sides_3",
-      "section_title": "Mandazi",
-      "importance_rank": 13,
-      "page_number": 9
-    },
-    {
-      "document": "Breakfast Ideas",
-      "section_title": "Cottage Cheese and Veggie Bowl Ingredients:",
-      "importance_rank": 14,
-      "page_number": 16
-    },
-    {
-      "document": "Dinner Ideas - Sides_1",
-      "section_title": "Cha Gio",
-      "importance_rank": 15,
-      "page_number": 13
-    },
-    {
-      "document": "Dinner Ideas - Sides_2",
-      "section_title": "Coconut Rice",
-      "importance_rank": 16,
-      "page_number": 1
-    },
-    {
-      "document": "Dinner Ideas - Sides_4",
-      "section_title": "Satay",
-      "importance_rank": 17,
-      "page_number": 13
-    },
-    {
-      "document": "Dinner Ideas - Mains_3",
-      "section_title": "Chili Con Carne Ingredients:",
-      "importance_rank": 18,
-      "page_number": 5
-    },
-    {
-      "document": "Lunch Ideas",
-      "section_title": "Lentil and Veggie Wrap Ingredients:",
-      "importance_rank": 19,
-      "page_number": 15
-    },
-    {
-      "document": "Dinner Ideas - Mains_1",
-      "section_title": "Beef Tacos Ingredients:",
-      "importance_rank": 20,
-      "page_number": 4
     }
   ],
   "subsection_analysis": [
@@ -162,81 +72,6 @@
       "document": "Breakfast Ideas",
       "refined_text": "\u2022 1 large whole wheat tortilla\n\u2022 1/4 cup hummus\n\u2022 1/4 cup shredded carrots\n\u2022 1/4 cup sliced cucumber\n\u2022 1/4 cup baby spinach\n\u2022 1/4 cup sliced bell pepper\nInstructions:\n\u2022 Spread hummus on the tortilla.",
       "page_number": 13
-    },
-    {
-      "document": "Dinner Ideas - Sides_3",
-      "refined_text": "\u2022 Ingredients :\no 1 package dumpling wrappers o 1/2 pound ground pork o 1/2 cup chopped cabbage o 1/4 cup chopped green onions o 2 cloves garlic o 1 tablespoon soy sauce o 1 teaspoon sesame oil o Oil for frying\n\u2022 Instructions :\no Mix ground pork, cabbage, green onions, minced garlic, soy sauce, and sesame o Place a spoonful of filling on each wrapper and fold to seal.",
-      "page_number": 9
-    },
-    {
-      "document": "Dinner Ideas - Sides_2",
-      "refined_text": "\u2022 Ingredients :\no 2 cups cassava flour o 1/4 cup butter o 1 small onion o 2 cloves garlic o 1/4 cup bacon o 1/4 cup parsley o 1 teaspoon salt\n\u2022 Instructions :\no Saut\u00e9 diced bacon, onion, and minced garlic in butter until crispy.",
-      "page_number": 8
-    },
-    {
-      "document": "Dinner Ideas - Sides_4",
-      "refined_text": "\u2022 Ingredients :\no 2 cups cooked pinto beans o 1/4 cup lard or vegetable oil o 1 small onion o 1 clove garlic o 1 teaspoon salt\n\u2022 Instructions :\no Heat lard or oil in a pan and saut\u00e9 diced onion and minced garlic until\ntranslucent.",
-      "page_number": 8
-    },
-    {
-      "document": "Dinner Ideas - Mains_3",
-      "refined_text": "\u2022 4 pork cutlets\n\u2022 1/2 cup flour\n\u2022 2 eggs, beaten\n\u2022 1 cup breadcrumbs\n\u2022 1/4 cup vegetable oil\n\u2022 1 lemon, sliced\n\u2022 Salt and pepper to taste\nInstructions:\n\u2022 Season pork cutlets with salt and pepper.",
-      "page_number": 1
-    },
-    {
-      "document": "Lunch Ideas",
-      "refined_text": "\u2022 2 slices whole grain bread\n\u2022 4 slices turkey breast\n\u2022 1/2 apple, thinly sliced\n\u2022 1/4 cup baby spinach\n\u2022 1 tablespoon mustard or mayo\nInstructions:\n\u2022 Spread mustard or mayo on one slice of bread.",
-      "page_number": 14
-    },
-    {
-      "document": "Dinner Ideas - Mains_2",
-      "refined_text": "\u2022 1 pound pork tenderloin, cubed\n\u2022 1 bell pepper, diced\n\u2022 1 small onion, diced\n\u2022 1/2 cup pineapple chunks\n\u2022 1/4 cup ketchup\n\u2022 1/4 cup rice vinegar\n\u2022 1/4 cup soy sauce\n\u2022 1/4 cup brown sugar\n\u2022 2 tablespoons cornstarch\n\u2022 2 tablespoons vegetable oil\n\u2022 Cooked rice for serving\nInstructions:\n\u2022 In a bowl, toss pork cubes with cornstarch.",
-      "page_number": 3
-    },
-    {
-      "document": "Dinner Ideas - Mains_1",
-      "refined_text": "Instructions:\nPreheat oven to 350\u00b0F (175\u00b0C).",
-      "page_number": 13
-    },
-    {
-      "document": "Dinner Ideas - Sides_3",
-      "refined_text": "\u2022 Ingredients :\no 2 cups flour o 1/4 cup sugar o 1 tablespoon baking powder o 1/2 teaspoon salt o 1/4 cup coconut milk o 1/4 cup water o Oil for frying\n\u2022 Instructions :\no Mix flour, sugar, baking powder, and salt in a bowl.",
-      "page_number": 9
-    },
-    {
-      "document": "Breakfast Ideas",
-      "refined_text": "\u2022 1 cup cottage cheese\n\u2022 1/4 cup diced cucumber\n\u2022 1/4 cup cherry tomatoes, halved\n\u2022 1/4 cup diced bell pepper\n\u2022 Salt and pepper to taste\nInstructions:\n\u2022 In a bowl, combine cottage cheese, cucumber, cherry tomatoes, and bell pepper.",
-      "page_number": 16
-    },
-    {
-      "document": "Dinner Ideas - Sides_1",
-      "refined_text": "\u2022 Ingredients :\no 1 package spring roll wrappers o 1/2 pound ground pork o 1/2 cup shrimp o 1/2 cup mushrooms o 1/4 cup carrots o 1/4 cup green onions o 2 cloves garlic o 2 tablespoons fish sauce o 1 tablespoon sugar o Oil for frying\n\u2022 Instructions :\no Mix ground pork, chopped shrimp, diced mushrooms, julienned carrots, chopped\ngreen onions, minced garlic, fish sauce, and sugar in a bowl.",
-      "page_number": 13
-    },
-    {
-      "document": "Dinner Ideas - Sides_2",
-      "refined_text": "\u2022 Ingredients :\no 1 cup rice o 1 cup coconut milk o 1 cup water o 1/4 cup shredded coconut o 1 teaspoon salt\n\u2022 Instructions :\no Saut\u00e9 shredded coconut until lightly browned.",
-      "page_number": 1
-    },
-    {
-      "document": "Dinner Ideas - Sides_4",
-      "refined_text": "\u2022 Ingredients :\no 1 pound chicken breast o 1/4 cup coconut milk o 2 tablespoons soy sauce o 2 tablespoons peanut butter o 1 tablespoon curry powder o 1 tablespoon brown sugar o Skewers\n\u2022 Instructions :\no Cut chicken into strips and thread onto skewers.",
-      "page_number": 13
-    },
-    {
-      "document": "Dinner Ideas - Mains_3",
-      "refined_text": "\u2022 1 pound ground beef\n\u2022 1 small onion, diced\n\u2022 2 cloves garlic, minced\n\u2022 1 can (15 ounces) kidney beans, drained\n\u2022 1 can (14.",
-      "page_number": 5
-    },
-    {
-      "document": "Lunch Ideas",
-      "refined_text": "\u2022 1 whole wheat tortilla\n\u2022 1/2 cup cooked lentils\n\u2022 1/4 cup bell pepper, sliced\n\u2022 1/4 cup cucumber, diced\n\u2022 1/4 cup shredded carrots\n\u2022 1 tablespoon hummus\nInstructions:\n\u2022 Lay the tortilla flat and spread the hummus evenly.",
-      "page_number": 15
-    },
-    {
-      "document": "Dinner Ideas - Mains_1",
-      "refined_text": "\u2022 1 pound ground beef\n\u2022 1 small onion, diced\n\u2022 2 cloves garlic, minced\n\u2022 1 packet taco seasoning\n\u2022 1/2 cup water\n\u2022 Taco shells or tortillas\nShredded lettuce, diced tomatoes, shredded cheese, sour cream, and salsa for toppings\nInstructions:\nIn a skillet, cook ground beef over medium heat until browned.",
-      "page_number": 4
     }
   ]
 }
