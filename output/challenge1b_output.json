@@ -13,65 +13,65 @@
     ],
     "persona": "Food Contractor",
     "job_to_be_done": "Prepare a vegetarian buffet-style dinner menu for a corporate gathering, including gluten-free items.",
-    "processing_timestamp": "2025-07-28T18:23:12.193166"
+    "processing_timestamp": "2025-07-28T13:39:03.213465"
   },
   "extracted_sections": [
     {
-      "document": "Dinner Ideas - Mains_2",
-      "section_title": "Beef and Broccoli Ingredients:",
-      "importance_rank": 1,
-      "page_number": 7
-    },
-    {
-      "document": "Dinner Ideas - Sides_1",
-      "section_title": "Bobotie",
-      "importance_rank": 2,
-      "page_number": 7
-    },
-    {
       "document": "Lunch Ideas",
       "section_title": "Hummus and Veggie Pita Ingredients:",
-      "importance_rank": 3,
+      "importance_rank": 1,
       "page_number": 3
     },
     {
-      "document": "Dinner Ideas - Mains_1",
-      "section_title": "Shepherd's Pie Ingredients:",
-      "importance_rank": 4,
-      "page_number": 6
+      "document": "Dinner Ideas - Sides_1",
+      "section_title": "Bouillabaisse",
+      "importance_rank": 2,
+      "page_number": 8
+    },
+    {
+      "document": "Dinner Ideas - Mains_2",
+      "section_title": "Beef and Broccoli Ingredients:",
+      "importance_rank": 3,
+      "page_number": 7
     },
     {
       "document": "Breakfast Ideas",
       "section_title": "Veggie Wrap Ingredients:",
-      "importance_rank": 5,
+      "importance_rank": 4,
       "page_number": 13
+    },
+    {
+      "document": "Dinner Ideas - Sides_3",
+      "section_title": "Kartoffelsalat (Potato Salad)",
+      "importance_rank": 5,
+      "page_number": 4
     }
   ],
   "subsection_analysis": [
     {
-      "document": "Dinner Ideas - Mains_2",
-      "refined_text": "\u2022 1 pound beef sirloin, thinly sliced\n\u2022 2 cups broccoli florets\n\u2022 1 small onion, diced\n\u2022 2 cloves garlic, minced\n\u2022 1/4 cup soy sauce\n\u2022 1/4 cup beef broth\n\u2022 2 tablespoons oyster sauce\n\u2022 1 tablespoon cornstarch\n\u2022 2 tablespoons vegetable oil\n\u2022 Cooked rice for serving\nInstructions:\n\u2022 In a small bowl, mix soy sauce, beef broth, oyster sauce, and cornstarch.",
-      "page_number": 7
-    },
-    {
-      "document": "Dinner Ideas - Sides_1",
-      "refined_text": "\u2022 Ingredients :\no 1 pound ground beef o 1 small onion o 2 cloves garlic o 1/4 cup raisins o 1/4 cup almonds o 1 tablespoon curry powder o 1 teaspoon salt o 1/2 teaspoon pepper o 2 eggs o 1/2 cup milk o 1/4 cup breadcrumbs\n\u2022 Instructions :\no Preheat oven to 350\u00b0F (175\u00b0C).",
-      "page_number": 7
-    },
-    {
       "document": "Lunch Ideas",
-      "refined_text": "\u2022 1 whole wheat pita bread\n\u2022 1/2 cup hummus\n\u2022 1/2 cup cucumber, sliced\n\u2022 1/2 cup bell pepper, sliced\n\u2022 1/4 cup shredded carrots\n\u2022 1/4 cup baby spinach\nInstructions:\n\u2022 Cut the pita bread in half to create pockets.",
+      "refined_text": "\u2022 1 whole wheat pita bread \u2022 1/2 cup hummus \u2022 1/2 cup cucumber, sliced \u2022 1/2 cup bell pepper, sliced \u2022 1/4 cup shredded carrots \u2022 1/4 cup baby spinach Instructions:\n\u2022 Cut the pita bread in half to create pockets.",
       "page_number": 3
     },
     {
-      "document": "Dinner Ideas - Mains_1",
-      "refined_text": "\u2022 1 pound ground lamb or beef\n\u2022 1 small onion, diced\n\u2022 2 cloves garlic, minced\n\u2022 1 cup frozen peas and carrots\n\u2022 1 cup beef broth\n\u2022 2 tablespoons tomato paste\n\u2022 2 tablespoons Worcestershire sauce\n\u2022 4 cups mashed potatoes\n\u2022 1/4 cup grated cheddar cheese\n\u2022 Salt and pepper to taste\nInstructions:\n\u2022 Preheat oven to 400\u00b0F (200\u00b0C).",
-      "page_number": 6
+      "document": "Dinner Ideas - Sides_1",
+      "refined_text": "o Add diced tomatoes, fish stock, wine, saffron, thyme, salt, and pepper, simmer\nfor 20 minutes.",
+      "page_number": 8
+    },
+    {
+      "document": "Dinner Ideas - Mains_2",
+      "refined_text": "\uf0b7 1 pound beef sirloin, thinly sliced \uf0b7 2 cups broccoli florets \uf0b7 1 small onion, diced \uf0b7 2 cloves garlic, minced \uf0b7 1/4 cup soy sauce \uf0b7 1/4 cup beef broth \uf0b7 2 tablespoons oyster sauce \uf0b7 1 tablespoon cornstarch \uf0b7 2 tablespoons vegetable oil \uf0b7 Cooked rice for serving Instructions:\n\uf0b7 In a small bowl, mix soy sauce, beef broth, oyster sauce, and cornstarch.",
+      "page_number": 7
     },
     {
       "document": "Breakfast Ideas",
-      "refined_text": "\u2022 1 large whole wheat tortilla\n\u2022 1/4 cup hummus\n\u2022 1/4 cup shredded carrots\n\u2022 1/4 cup sliced cucumber\n\u2022 1/4 cup baby spinach\n\u2022 1/4 cup sliced bell pepper\nInstructions:\n\u2022 Spread hummus on the tortilla.",
+      "refined_text": "\u2022 1 large whole wheat tortilla \u2022 1/4 cup hummus \u2022 1/4 cup shredded carrots \u2022 1/4 cup sliced cucumber \u2022 1/4 cup baby spinach \u2022 1/4 cup sliced bell pepper Instructions:\n\u2022 Spread hummus on the tortilla.",
       "page_number": 13
+    },
+    {
+      "document": "Dinner Ideas - Sides_3",
+      "refined_text": "Instructions:\no Boil potatoes until tender, then dice.",
+      "page_number": 4
     }
   ]
 }

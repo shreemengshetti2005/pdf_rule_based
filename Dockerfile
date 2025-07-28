@@ -11,6 +11,9 @@ WORKDIR /app
 # Copy requirements
 COPY requirements.txt ./
 
+# Install CPU only torch
+RUN pip install torch==2.7.1 --extra-index-url https://download.pytorch.org/whl/cpu
+
 # Install Python dependencies (no torch!)
 RUN pip install --no-cache-dir -r requirements.txt
 
